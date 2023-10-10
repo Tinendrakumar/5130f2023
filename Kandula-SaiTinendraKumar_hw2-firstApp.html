@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandula-SaiTinendraKumar_hw2-firstApp</title>
+    <script src="https://unpkg.com/vue@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: bisque;
+            margin: 15px auto;
+            padding: 25px;
+            backdrop-filter: blur();
+        }
+        #app {
+            text-align: left;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 40px;
+            max-width: 1200px;
+            &:hover {
+                background-color: lightblue;
+                animation: anime 5s infinite alternate;
+            }
+        }
+/* create table with divisions */
+        .table {
+            text-align: left;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 40px;
+            max-width: 1200px;
+            backdrop-filter: blur(10px);
+            & td, & th{
+                padding: 15px;
+                text-align: left;
+                border: 1px solid #aaa;
+            }
+            & th{
+                background-color: black;
+                color: white;
+            }
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border: 10px solid #ccc;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            border: #007bff;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin: 2px;
+            padding: 20px;
+        }
+        ol {
+            padding-left: 20px;
+        }
+        li {
+            font-size: 16px;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            margin: 10px auto;
+            padding: 8px;
+            border: 8px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.9); /* Background with transparency */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 40px;
+            max-width: 1200px;
+            backdrop-filter: blur();
+            &:hover {
+                background-color: antiquewhite;
+            }
+        }
+
+        @keyframes anime {
+            0% {
+                background-color: antiquewhite;
+            }
+            30% {
+                background-color: lightblue;
+            }
+            60% {
+                background-color: white;
+            }
+            90% {
+                background-color: lightgrey;
+            }
+            100% {
+                background-color: antiquewhite;
+            }
+            button {
+                background-color: #f0f0f0;
+                border: 2px solid black;
+                padding: 6px;
+                text-align: right;
+                display: inline-block;
+                font-size: 15px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Internet and Web Systems Assignment 2</h1>
+        <h1>Name: Sai Tinendra Kumar</h1>
+        <img
+                src="https://cs.uml.edu/~skandula/images/selfie.jpg"
+                alt="Selfie"
+                width="20%"
+                height="20%"
+        >
+    </div>
+    <div id="app">
+        <div class="table">
+            <p>Sample List:</p>
+            <input type="text" v-model="newitem" placeholder="Add item here">
+            <br></br>
+            <button v-on:click="newitems.push(newitem)">Add</button>
+            <button v-on:click="newitems.pop()">Remove</button>
+            <ul>
+                <li v-for="item in newitems">{{ item }}</li>
+            </ul>
+            <ol>
+                <li v-for="item in newitems">{{ item }}</li>
+            </ol>
+            <p>Download Item list as a text file:</p>
+            <a :href="'data:text/plain;charset=utf-8,' + encodeURIComponent(newitems.join('\n'))" download="newitems.txt">Download</a>
+        </div>
+    <div class="table">
+        <p>Sample Table:</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+            <tr v-for="item in tableitems">
+                <td>{{ item.name }}</td>
+                <td>{{ item.role }}</td>
+            </tr>
+            <tr>
+                <td><input type="text" v-model="name" placeholder="Enter Name"></td>
+                <td><input type="text" v-model="role" placeholder="Enter Role"></td>
+            </tr>
+        </table>
+        <button v-on:click="tableitems.push({name: name, role: role})">Add</button>
+        <button v-on:click="tableitems.pop()">Remove</button>
+    </div>
+</div>
+    <div class="container">
+        <p>Sample Search Tab:</p>
+        <form action="https://www.google.com/search" method="get">
+            <label for="q">Search Google:</label>
+            <input type="search" id="q" name="q" placeholder="Type here">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'This is a webpage for IWS Assignment 2.',
+                newitems: [
+                            'Item1',
+                            'Item2',
+                            'Item3',
+                ],
+                newitem: '',
+                tableitems: [
+                    { name: 'Sai', role: 'Student' },
+                    { name: 'Tinendra', role: 'Student' },
+                    { name: 'Kumar', role: 'Student' },
+                ],
+                name: '',
+                role: '',
+            }
+        });
+    </script>
+</body>
+</html>
