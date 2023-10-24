@@ -31,3 +31,6 @@ TAG is a web-based platform, so there's no installation required. Simply visit o
 
 
 For questions, feedback, or support, please contact [tinendra.kumar@gmail.com].
+
+References:
+Kuusela, K. (2021). The Consumer Decision Journey in Car Financing and the Challenges of Selling Private Leasing.
