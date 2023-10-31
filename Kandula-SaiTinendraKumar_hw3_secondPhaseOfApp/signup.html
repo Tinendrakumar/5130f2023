@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information Form with Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href="new.css">
+</head>
+<body>
+<div id="app">
+    <form class="form" @submit.prevent="submitForm">
+        <p class="title">Register</p>
+        <p class="message">Signup now and get full access to our app.</p>
+        <label>
+            <input class="input" type="text" placeholder="" required v-model="formData.name">
+            <span>Name</span>
+        </label>
+
+        <label>
+            <input class="input" type="email" placeholder="" required v-model="formData.email">
+            <span>Email</span>
+        </label>
+
+        <label>
+            <input class="input" type="password" placeholder="" required v-model="formData.password">
+            <span>Password</span>
+        </label>
+
+        <label>
+            <input class="input" type="password" placeholder="" required v-model="formData.confirmPassword">
+            <span>Confirm password</span>
+        </label>
+
+        <button type="submit" class="submit">Submit</button>
+        <button @click="downloadUserData" class="download">Download User Data</button>
+        <p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
+
+    </form>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            formData: {
+                name: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            }
+        },
+        methods: {
+            submitForm() {
+                const dataToSend = JSON.stringify(this.formData);
+
+                fetch('https://jsonplaceholder.typicode.com/posts', {
+                    method: 'POST',
+                    body: dataToSend,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                }).then(data => {
+                    console.log('Data sent successfully:', data);
+                    window.location.href = 'form.html'; // Redirect to a different page
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            },
+                downloadUserData() {
+                    const userData = JSON.stringify(this.formData, null, 2);
+                    const blob = new Blob([userData], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'user_data.json';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }
+            }
+
+    });
+</script>
+</body>
+</html>
