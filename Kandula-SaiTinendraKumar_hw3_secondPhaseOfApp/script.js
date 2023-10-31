@@ -1,23 +1,32 @@
-const { Octokit } = require("octokit");
+const express = require('express');
+const { Octokit } = require("@octokit/rest");
 
+const app = express();
 const octokit = new Octokit({
-  auth: "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",
+  auth: "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" // Replace with your personal access token
 });
 
-async function createFile() {
+app.use(express.json());
+
+app.post('/submitFormData', async (req, res) => {
   try {
-    const response = await octokit.rest.repos.createOrUpdateFileContents({
+    const formData = req.body; // Form data from client
+
+    // Creating a file in the repository
+    const response = await octokit.repos.createOrUpdateFileContents({
       owner: 'tinendrakumar',
       repo: 'Kandula-SaiTinendraKumar_hw3_secondPhaseOfApp',
-      path: 'data/data.json', // The file path you want to create in your repo
+      path: 'data/data.json', // File path in your repo
       message: 'Adding user data',
-      content: Buffer.from(JSON.stringify(yourFormData)).toString('base64'),
+      content: Buffer.from(JSON.stringify(formData)).toString('base64')
     });
 
-    console.log('File created:', response.data);
+    res.send('Form data saved to GitHub successfully!');
   } catch (error) {
-    console.error('Error creating file:', error);
+    res.status(500).send('Error saving data to GitHub');
   }
-}
+});
 
-createFile();
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
