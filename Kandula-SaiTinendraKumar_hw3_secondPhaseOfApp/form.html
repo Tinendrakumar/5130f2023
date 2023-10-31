@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information Form with Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href="new.css">
+</head>
+<body>
+<div id="app">
+    <!-- Toggle buttons to switch between sections -->
+    <div class="section-buttons">
+        <button @click="showBasicInfo">Click to Add Basic Information</button>
+        <button @click="showExtendedInfo">Click to Add Additional Information</button>
+    </div>
+
+    <!-- Basic Information Form -->
+    <div v-show="showBasic" class="form">
+        <p class="title">Basic Information</p>
+        <p class="message">Please tell us more about yourself</p>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.age">
+            <span>Age</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.gender">
+            <span>Gender</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.address">
+            <span>Address</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.currentLocation">
+            <span>Current Location</span>
+        </label>
+        <button @click="submitForm('basic')" class="submit">Submit Basic Info</button>
+    </div>
+
+    <!-- Extended Information Form -->
+    <div v-show="showExtended" class="form">
+        <p class="title">Additional Information</p>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.fromLocation">
+            <span>From Location</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.likeToBeIn">
+            <span>Destination you would like to travel</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.requiredcar">
+            <span>Required car</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.electric">
+            <span>Electric or Gas</span>
+        </label>
+            <label>
+                <input class="input" type="text" placeholder="" v-model="formData.license">
+                <span>License Number</span>
+                <label class="custom-file-upload" for="file">
+                    <div class="text">
+                        <span>Click to license image</span>
+                    </div>
+                    <input type="file" id="file">
+                </label>
+            </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.Investment">
+            <span>Investment Portfolio</span>
+            <label class="custom-file-upload" for="file">
+                <div class="text">
+                    <span>Click to upload portfolio</span>
+                </div>
+                <input type="file" id="file">
+            </label>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.stocks">
+            <span>Stocks Owned</span>
+        </label>
+        <label>
+            <input class="input" type="text" placeholder="" v-model="formData.facts">
+            <span>Interesting Facts about yourself</span>
+        </label>
+        <button @click="submitForm('extended')" class="submit">Submit Extended Info</button>
+        <button @click="downloadUserData" class="download">Download User Data</button>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            showBasic: true,
+            showExtended: false,
+            formData: {
+                age: '',
+                gender: '',
+                address: '',
+                currentLocation: '',
+                fromLocation: '',
+                likeToBeIn: '',
+                car: '',
+                electric: '',
+                license: '',
+                Investment: '',
+                requiredcar: '',
+                stocks: '',
+                facts: '',
+
+            }
+        },
+        methods: {
+            showBasicInfo() {
+                this.showBasic = true;
+                this.showExtended = false;
+            },
+            showExtendedInfo() {
+                this.showBasic = false;
+                this.showExtended = true;
+            },
+            submitForm(section) {
+                if (section === 'basic') {
+                    console.log('Submitting Basic Info:', this.formData);
+                    // Additional submission logic for basic info
+                } else if (section === 'extended') {
+                    console.log('Submitting Extended Info:', this.formData);
+                    // Additional submission logic for extended info
+                }
+                    const dataToSend = JSON.stringify(this.formData);
+
+                    fetch('https://jsonplaceholder.typicode.com/posts', {
+                        method: 'POST',
+                        body: dataToSend,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    }).then(data => {
+                        console.log('Data sent successfully:', data);
+                        window.location.href = 'form.html'; // Redirect to a different page
+                    }).catch(error => {
+                        console.error('Error:', error);
+                    });
+                },
+                downloadUserData() {
+                    const userData = JSON.stringify(this.formData, null, 2);
+                    const blob = new Blob([userData], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'user_data.json';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }
+            }
+
+    });
+</script>
+</body>
+</html>
