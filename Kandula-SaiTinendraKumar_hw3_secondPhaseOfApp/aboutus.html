@@ -2,12 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandula-SaiTinendraKumar</title>
+    <link rel="stylesheet" href="https://cs.uml.edu/~skandula/images/iws.css">
+    <script src="https://unpkg.com/vue@2"></script>
 </head>
 <body>
-<h1>About us (Under construction)</h1>
-<a href="home.html">Home</a>
-<h1>Form</h1>
-<a href="form.html">Please navigate to this Form</a>
+    <div class="container">
+        <h1>Home page</h1>
+    <a href="home.html">Home</a>
+        <h1>Name: Sai Tinendra Kumar</h1>
+        <img
+            src="https://cs.uml.edu/~skandula/images/selfie.jpg"
+            alt="Selfie"
+            width="20%"
+            height="20%"
+        >
+    </div>
+    <div id="app">
+            <p>My Resume:</p>
+            <button @click="showResume">Show Resume</button>
+            <a v-if="showPdf" :href="pdfLink" target="_blank">View PDF</a>
+    </div>
+
+<script>
+    new Vue({
+    el: '#app',
+    data: {
+        showPdf: false,
+        pdfLink: 'https://cs.uml.edu/~skandula/images/Tinendra Kumar.pdf'
+    },
+    methods: {
+        showResume() {
+            this.showPdf = true;
+        }
+    }
+});
+
+</script>
+
 </body>
 </html>
