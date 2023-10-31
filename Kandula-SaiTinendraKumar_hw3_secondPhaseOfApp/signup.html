@@ -4,39 +4,34 @@
     <meta charset="UTF-8">
     <title>User Information Form with Vue.js</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="new.css">
 </head>
 <body>
 <div id="app">
-     <p class="title">User form</p>
+    <p class="title">User form</p>
     <a href="form.html">Click here to add more information without registering</a>
     <form class="form" @submit.prevent="submitForm">
         <p class="title">Register</p>
         <p class="message">Signup now and get full access to our app.</p>
         <label>
-            <input class="input" type="text" placeholder="" required v-model="formData.name">
+            <input class="input" type="text" required v-model="formData.name">
             <span>Name</span>
         </label>
-
         <label>
-            <input class="input" type="email" placeholder="" required v-model="formData.email">
+            <input class="input" type="email" required v-model="formData.email">
             <span>Email</span>
         </label>
-
         <label>
-            <input class="input" type="password" placeholder="" required v-model="formData.password">
+            <input class="input" type="password" required v-model="formData.password">
             <span>Password</span>
         </label>
-
         <label>
-            <input class="input" type="password" placeholder="" required v-model="formData.confirmPassword">
+            <input class="input" type="password" required v-model="formData.confirmPassword">
             <span>Confirm password</span>
         </label>
-
         <button type="submit" class="submit">Submit</button>
-        <button @click="downloadUserData" class="download">Download User Data</button>
         <p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
-
     </form>
 </div>
 
@@ -52,39 +47,19 @@
             }
         },
         methods: {
-            submitForm() {
-                const dataToSend = JSON.stringify(this.formData);
-
-                fetch('https://jsonplaceholder.typicode.com/posts', {
-                    method: 'POST',
-                    body: dataToSend,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error('Network response was not ok.');
-                }).then(data => {
-                    console.log('Data sent successfully:', data);
-                    window.location.href = 'form.html'; // Redirect to a different page
-                }).catch(error => {
-                    console.error('Error:', error);
-                });
-            },
-                downloadUserData() {
-                    const userData = JSON.stringify(this.formData, null, 2);
-                    const blob = new Blob([userData], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'user_data.json';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
+            async submitForm() {
+                try {
+                    const response = await axios.post('http://localhost:3000/register', this.formData);
+                    console.log('User registered:', response.data);
+                    alert('Registration successful!'); // Show success message
+                    this.formData = {}; // Reset form data
+                    window.location.href = 'form.html';
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    alert('Registration failed. Please try again.');
                 }
             }
-
+        }
     });
 </script>
 </body>

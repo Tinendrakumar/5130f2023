@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>User Information Form with Vue.js</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="new.css">
 </head>
 <body>
@@ -19,19 +20,24 @@
         <p class="title">Basic Information</p>
         <p class="message">Please tell us more about yourself</p>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.age">
+            <input class="input" type="number" placeholder="" v-model="basicInfo.age">
             <span>Age</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.gender">
-            <span>Gender</span>
+        <select v-model="basicInfo.gender" class="input">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <span v-if="!basicInfo.gender" style="color: deepskyblue;">Please select a gender</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.address">
+            <input class="input" type="text" placeholder="" v-model= "basicInfo.address">
             <span>Address</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.currentLocation">
+            <input class="input" type="text" placeholder="" v-model="basicInfo.currentLocation">
             <span>Current Location</span>
         </label>
         <button @click="submitForm('basic')" class="submit">Submit Basic Info</button>
@@ -42,47 +48,56 @@
     <div v-show="showExtended" class="form">
         <p class="title">Additional Information</p>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.fromLocation">
+            <input class="input" type="text" placeholder="" v-model="extendedInfo.fromLocation">
             <span>From Location</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.likeToBeIn">
+            <input class="input" type="text" placeholder="" v-model="extendedInfo.likeToBeIn">
             <span>Destination you would like to travel</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.requiredcar">
+            <input class="input" type="text" placeholder="" v-model="extendedInfo.requiredcar">
             <span>Required car</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.electric">
-            <span>Electric or Gas</span>
+        <select v-model="extendedInfo.carmodel" class="input">
+            <option value="">Select</option>
+            <option value="Sports">Sports</option>
+            <option value="Luxury">Luxury</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+        </select>
+        <span v-if="!extendedInfo.carmodel" style="color: deepskyblue;">Please select a model</span>
+        </label>
+
+        <label>
+            <select v-model="extendedInfo.cartype" class="input">
+                <option value="">Select</option>
+                <option value="Electric">Electric</option>
+                <option value="Gas">Gas</option>
+            </select>
+            <span v-if="!extendedInfo.cartype" style="color: deepskyblue;">Please select a type</span>
         </label>
             <label>
-                <input class="input" type="text" placeholder="" v-model="formData.license">
+                <input class="input" type="text" placeholder="" v-model="extendedInfo.license">
                 <span>License Number</span>
-                <label class="custom-file-upload" for="file">
-                    <div class="text">
-                        <span>Click to license image</span>
-                    </div>
-                    <input type="file" id="file">
-                </label>
             </label>
+        <label class="custom-file-upload" for="file">
+            <p>Click to Upload License image</p>
+            <input type="file" id="file" accept="image/*">
+        </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.Investment">
-            <span>Investment Portfolio</span>
             <label class="custom-file-upload" for="file">
-                <div class="text">
-                    <span>Click to upload portfolio</span>
-                </div>
+                <p>Click to Upload Portfolio data</p>
                 <input type="file" id="file">
             </label>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.stocks">
+            <input class="input" type="text" placeholder="" v-model="extendedInfo.stocks">
             <span>Stocks Owned</span>
         </label>
         <label>
-            <input class="input" type="text" placeholder="" v-model="formData.facts">
+            <input class="input" type="text" placeholder="" v-model="extendedInfo.facts">
             <span>Interesting Facts about yourself</span>
         </label>
         <button @click="submitForm('extended')" class="submit">Submit Extended Info</button>
@@ -96,21 +111,22 @@
         data: {
             showBasic: true,
             showExtended: false,
-            formData: {
+            basicInfo: {
                 age: '',
                 gender: '',
                 address: '',
                 currentLocation: '',
+            },
+            extendedInfo: {
                 fromLocation: '',
                 likeToBeIn: '',
-                car: '',
-                electric: '',
+                requiredcar: '',
+                carmodel: '',
+                cartype: '',
                 license: '',
                 Investment: '',
-                requiredcar: '',
                 stocks: '',
                 facts: '',
-
             }
         },
         methods: {
@@ -130,38 +146,62 @@
                     console.log('Submitting Extended Info:', this.formData);
                     // Additional submission logic for extended info
                 }
-                    const dataToSend = JSON.stringify(this.formData);
+            },
+            downloadUserData() {
+                const userData = JSON.stringify(this.formData, null, 2);
+                const blob = new Blob([userData], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'user_data.json';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            },
+            // Updated method to submit form data to the backend server
+            async submitForm(section) {
+                try {
+                    if (section === 'basic') {
+                        // Make an HTTP POST request to the backend server for basic info
+                        const response = await axios.post('http://localhost:3000/basic-info', this.basicInfo);
+                        console.log('Basic Info submitted:', response.data);
+                        // Additional handling after submission
 
-                    fetch('https://jsonplaceholder.typicode.com/posts', {
-                        method: 'POST',
-                        body: dataToSend,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error('Network response was not ok.');
-                    }).then(data => {
-                        console.log('Data sent successfully:', data);
-                        window.location.href = 'form.html'; // Redirect to a different page
-                    }).catch(error => {
-                        console.error('Error:', error);
-                    });
-                },
-                downloadUserData() {
-                    const userData = JSON.stringify(this.formData, null, 2);
-                    const blob = new Blob([userData], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'user_data.json';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
+                        // Show success message
+                        alert('Basic information submitted successfully!');
+                        // Reset form data
+                        this.basicInfo = {
+                            age: '',
+                            gender: '',
+                            address: '',
+                            currentLocation: '',
+                        };
+                    } else if (section === 'extended') {
+                        // Make an HTTP POST request to the backend server for extended info
+                        const response = await axios.post('http://localhost:3000/extended-info', this.extendedInfo);
+                        console.log('Extended Info submitted:', response.data);
+                        // Additional handling after submission
+
+                        // Show success message
+                        alert('Extended information submitted successfully!');
+                        // Reset form data
+                        this.extendedInfo = {
+                            fromLocation: '',
+                            likeToBeIn: '',
+                            requiredcar: '',
+                            carmodel: '',
+                            electric: '',
+                            license: '',
+                            Investment: '',
+                            stocks: '',
+                            facts: '',
+                        };
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    // Handle error
                 }
-            }
-
+            },
+        }
     });
 </script>
 </body>
