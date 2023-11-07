@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Data Validation</title>
+    <link rel="stylesheet" href="classwebpage.css">
+</head>
+<body>
+<h1>User Data Validation</h1>
+<form id="userdata">
+    <label for="email">Enter Email:</label>
+    <input type="email" id="email" name="email" required>
+    <p id="emailError"></p>
+
+    <label for="phoneNumber">Enter Phone Number:</label>
+    <input type="number" id="phoneNumber" name="phoneNumber" required>
+    <p id="phoneError"></p>
+
+    <label for="url">Enter URL:</label>
+    <input type="text" id="url" name="url" required>
+    <p id="urlError"></p>
+
+    <button type="submit">Check</button>
+    <button id="clear" type="button">Clear</button>
+</form>
+<p id="overallResult" style="font-weight: bold;"></p>
+
+<script>
+    document.getElementById('userdata').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let phonePattern = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+        let urlPattern = /^(?:(ftp|http|https):\/\/)?(www\.)[\w\-]+(\.[\w\-]+)+([\w\-,@?^=%&:/~#]*[\w\-?^=%&/~#])?/;
+
+        let email = document.getElementById('email').value;
+        let phoneNumber = document.getElementById('phoneNumber').value;
+        let url = document.getElementById('url').value;
+
+        const emailError = document.getElementById('emailError');
+        const phoneError = document.getElementById('phoneError');
+        const urlError = document.getElementById('urlError');
+
+        const emailValid = emailPattern.test(email);
+        const phoneValid = phonePattern.test(phoneNumber);
+        const urlValid = urlPattern.test(url);
+
+        if (!emailValid) {
+            emailError.innerText = "Invalid email format. (Example format: username@domain.com)";
+        } else {
+            emailError.innerText = "Valid email format.";
+        }
+
+        if (!phoneValid) {
+            phoneError.innerText = "Invalid phone number format. (Example format:(xxx) xxx-xxxx || xxx-xxx-xxxx || xxx xxx xxxx)";
+        } else {
+            phoneError.innerText = "Valid phone number format.";
+        }
+
+        if (!urlValid) {
+            urlError.innerText = "Invalid URL format. (Example: http://www.example.com OR https://www.example.com OR www.example.com)";
+        } else {
+            urlError.innerText = "Valid URL format.";
+        }
+
+        const overallResult = document.getElementById('overallResult');
+        if (emailValid && phoneValid && urlValid) {
+            overallResult.innerText = "All fields are valid!"
+            overallResult.style.color = "green";
+        } else {
+            overallResult.innerText = "Please check the input fields!"
+            overallResult.style.color = "violet";
+        }
+        // Clear everything in form after clicking the clear button
+        document.getElementById('clear').addEventListener('click', function() {
+            emailError.innerText = "";
+            phoneError.innerText = "";
+            urlError.innerText = "";
+            overallResult.innerText = "";
+            userdata.reset();
+        });
+
+    });
+</script>
+</body>
+</html>
