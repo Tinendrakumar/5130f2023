@@ -1,6 +1,6 @@
 ## Project Name: TAG (Personalized Car Finance Advisor)
 # Author: Sai Tinendra Kandula, Abhinay Mangasamudram, Gireeshwar Gangarapu
-Date: 10/16/2023
+Date: 11/06/2023
 
 # TAG (Personalized Car Finance Advisor)
 
@@ -18,15 +18,17 @@ TAG is a web-based platform, so there's no installation required. Simply visit o
 
 ## Usage
 
-1. **Sign Up or Log In:** Create an account or log in if you're an existing user. Your account allows us to provide personalized advice.
+1. **Browse all options** Browse all options to find the vehicle suited to your preferences and requirements.
 
-2. **Answer a Few Questions:** We'll ask you a series of questions about your financial status, preferences, and your intended vehicle. This information is used to tailor our recommendations to your unique circumstances.
+2. **Form: Answer a Few Questions:** We'll ask you a series of questions about your financial requirements, preferences, and your intended vehicle. This information is used to tailor our recommendations to your unique circumstances.
 
 3. **Get Personalized Guidance:** After answering the questions, we'll provide a clear comparison of leasing and buying options, considering your financial situation. You'll see the long-term financial impact of each choice.
 
+4.**About us** Know more about the people behind this page.
+
 ## Features
 
-- **Personalized Guidance:** Tailored recommendations based on your financial status.
+- **Personalized Guidance:** Tailored recommendations based on your financial requirements.
 - **Comparison Tool:** Clear side-by-side comparisons of leasing and buying options.
 
 
