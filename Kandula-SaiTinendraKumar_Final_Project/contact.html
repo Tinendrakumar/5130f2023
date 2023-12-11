@@ -2,97 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0 auto;
-            padding: 0 5%;
-            background-image: url("https://cs.uml.edu/~skandula/images/CAR.avif");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 {
-            margin: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 15px;
-        }
-
-        input[type="submit"] {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Subscribe</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/new.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/radiobuttons.css">
 </head>
+<style>
+    body{
+        background-image: url("images/car3.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-attachment: scroll;
+    }
+    .form{
+        transform: translate(-50%, -38%);
+    }
+</style>
 <body>
-<header>
-    <h1>Contact Us</h1>
-</header>
-<div>
-    <a href="home.html">Home</a>
-    <a href="guidance2.html">Personalized Guidance</a>
-    <a href="browse.html">Browse</a>
-    <a href="aboutus.html">About Us</a>
-</div>
-<div class="container">
-    <h2>We'd Love to Hear from You</h2>
-    <p>Have questions or feedback for us? Please fill out the form below, and we'll get back to you as soon as
-        possible.</p>
+<div id="app">
+    <div class="header-container radio-inputs">
+        <label class="radio">
+            <input type="radio" name="radio" checked="">
+            <span class="name" v-if="!userLoggedIn" onclick="location.href='home.html'">Home</span>
+            <span class="name" v-else @click="location.href='home(signin).html'">Home</span>
+        </label>
 
-    <form action="submit_contact_form.php" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+        <label class="radio">
+            <input type="radio" name="radio">
+            <span class="name" v-if="!userLoggedIn" onclick="location.href='guidance2.html'">Explore As Guest</span>
+            <span class="name" v-else @click="location.href='guidance(form).html'">Explore</span>
+        </label>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <label class="radio">
+            <input type="radio" name="radio">
+            <span class="name" @click="location.href='faq.html'">FAQ</span>
+        </label>
 
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
+        <label class="radio">
+            <input type="radio" name="radio">
+            <span class="name" v-if="!userLoggedIn" onclick="location.href='signin.html'">SignUp/LogIn </span>
+            <span class="name" v-else @click="signout()">Sign Out</span>
+        </label>
+    </div>
 
-        <input type="submit" value="Submit">
+
+    <form class="form" @submit.prevent="submitContactForm">
+        <p class="title">Contact US</p>
+        <p class="message">Have questions or feedback for us? Please fill out the form below, and we'll get back to you as soon as possible.</p>
+        <label>
+            <input class="input" type="text" required v-model="contactData.name">
+            <span>Name</span>
+        </label>
+        <label>
+            <input class="input" type="email" required v-model="contactData.email">
+            <span>Email</span>
+        </label>
+        <label>
+            <textarea class="input" rows="6" required v-model="contactData.message"></textarea>
+            <span>Message</span>
+        </label>
+        <button id="submitButton" class="submit">Submit</button>
+        <p class="subscribe">Already did? <a href="home.html">Click here for Home</a></p>
     </form>
 </div>
+
+<script src="js/faq%20and%20subscribe.js"></script>
 </body>
 </html>

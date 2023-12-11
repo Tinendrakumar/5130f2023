@@ -19,6 +19,7 @@
     }
 </style>
 <body>
+<div id="app">
 <div>
     <input type="checkbox" id="checkbox">
     <label for="checkbox" class="toggle">
@@ -39,7 +40,7 @@
     </label>
 </div>
 <h2>ALL CAR MODELS</h2>
-<div id="app">
+
     <div class="radio-input">
         <label>
             <input v-model="sortOption" type="radio" id="value-1" name="value-radio" value="model">
@@ -79,6 +80,9 @@
                                 <option value="subprime">Subprime: 501-600</option>
                                 <option value="deep_subprime">Deep subprime: 300-500</option>
                             </select>
+                        </p>
+                        <p><strong>Select your Down Payment($):</strong>
+                            <input type="number" id="downpayment" v-model="formData.downpayment" placeholder="Enter downpayment">
                         </p>
                         <p><strong>Loan Cost:</strong> ${{ calculateTotalCost(car, formData) }}</p>
                         <p><strong>Monthly Payment:</strong> ${{ calculateMonthlyPayment(car, formData) }}</p>

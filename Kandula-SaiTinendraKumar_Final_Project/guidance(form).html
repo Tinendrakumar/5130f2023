@@ -51,6 +51,7 @@
     </div>
     <br><br>
     <form class="form" @submit.prevent="submitForm" v-if="formVisible">
+        <button class="button-close" @click="toggleFormVisibility">X Close Form</button>
         <p class="title">Car Guidance Form</p>
         <p class="message">Fill out the form below to get personalized guidance on which car to buy or lease</p>
         <label for="pickup_date">
@@ -178,6 +179,7 @@
     <!-- Add this section to your existing HTML -->
     <div v-if="showSubmissions" class="submissionlist">
         <h2 class="tracking-in-contract-bck">Previous Submissions</h2>
+        <button class="button-close" @click="toggleshowSubmissions">X Close Form</button>
         <ul>
             <li v-for="submission in userSubmissions" :key="submission.id" class="submission-item">
 

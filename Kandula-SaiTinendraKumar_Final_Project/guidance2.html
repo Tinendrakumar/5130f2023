@@ -52,6 +52,7 @@
     </div>
     <br><br>
     <form class="form" @submit.prevent="submitForm" v-if="formVisible">
+        <button class="button-close" @click="toggleFormVisibility">X Close Form</button>
         <p class="title">Car Guidance Form</p>
         <p class="message">Fill out the form below to get personalized guidance on which car to buy or lease</p>
         <label for="pickup_date">

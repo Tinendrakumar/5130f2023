@@ -25,27 +25,33 @@
     }
 </style>
 <body>
+<div id="app">
 <div class="header-container radio-inputs">
     <label class="radio">
         <input type="radio" name="radio" checked="">
-        <span class="name" onclick="location.href='home.html'">Home</span>
+        <span class="name" v-if="!userLoggedIn" onclick="location.href='home.html'">Home</span>
+        <span class="name" v-else @click="location.href='home(signin).html'">Home</span>
     </label>
 
     <label class="radio">
         <input type="radio" name="radio">
-        <span class="name" onclick="location.href='browse.html'">Explore As Guest</span>
+        <span class="name" v-if="!userLoggedIn" onclick="location.href='guidance2.html'">Explore As Guest</span>
+        <span class="name" v-else @click="location.href='guidance(form).html'">Explore</span>
     </label>
 
     <label class="radio">
         <input type="radio" name="radio">
-        <span class="name" onclick="location.href='faq.html'">FAQ</span>
+        <span class="name" @click="location.href='faq.html'">FAQ</span>
     </label>
+
     <label class="radio">
         <input type="radio" name="radio">
-        <span class="name" onclick="location.href='signin.html'">SignUp / LogIn</span>
+        <span class="name" v-if="!userLoggedIn" onclick="location.href='signin.html'">SignUp/LogIn </span>
+        <span class="name" v-else @click="signout()">Sign Out</span>
     </label>
 </div>
-<div id="app">
+
+
     <form class="form" @submit.prevent="submitForm">
         <p class="title">Subscription</p>
         <p class="message">Subscribe for weekly recommendations.</p>
@@ -62,6 +68,6 @@
     </form>
 </div>
 
-<script src="js/subscribe.js"></script>
+<script src="js/faq%20and%20subscribe.js"></script>
 </body>
 </html>
