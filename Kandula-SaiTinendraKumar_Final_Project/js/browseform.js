@@ -14,7 +14,8 @@ new Vue({
             pickupDate: new Date(),
             dropoffDate: new Date(),
             features: [],
-            selectedServices: []
+            selectedServices: [],
+            downpayment: 500,
         },
         loading: true,
         error: null,
@@ -48,7 +49,10 @@ new Vue({
                     pickupDate: new Date(params.get("pickupDate")),
                     dropoffDate: new Date(params.get("dropoffDate")),
                     features: params.getAll("features[]"),
-                    selectedServices: params.getAll("selectedServices[]")
+                    selectedServices: params.getAll("selectedServices[]"),
+                    downpayment: params.has("downpayment")
+                        ? Number(params.get("downpayment"))
+                        : 500, // Default downpayment value
                 };
 
                 let query = db.collection('carCost')
@@ -168,19 +172,19 @@ new Vue({
                 prime: 6.44,
                 nonprime: 8.99,
                 subprime: 11.72,
-                deep_subprime: 14.18
+                deep_subprime: 14.18,
             };
 
-            const interestRate = interestRates[formData.selectedCreditScore];
+            const interestRate = interestRates[this.formData.selectedCreditScore];
 
-            const loanAmount = car.cost;
+            const loanAmount = car.cost - parseFloat(this.formData.downpayment);
             const monthlyInterestRate = interestRate / 100 / 12;
             const totalPayments = loanDurationInYears * 12;
             const loanPayment = (monthlyInterestRate * loanAmount) / (1 - Math.pow(1 + monthlyInterestRate, -totalPayments));
 
             return {
                 totalCost: (loanPayment * totalPayments).toFixed(2),
-                monthlyPayment: loanPayment.toFixed(2)
+                monthlyPayment: loanPayment.toFixed(2),
             };
         },
         calculateTotalCost(car, formData) {
@@ -195,6 +199,8 @@ new Vue({
         },
         getSelectedServices(services) {
             return services.filter(service => this.formData.selectedServices.includes(service)).join(', ');
-        }
+        },
+        // calculate based on down payment method calculatedownpayment
+
     },
 });

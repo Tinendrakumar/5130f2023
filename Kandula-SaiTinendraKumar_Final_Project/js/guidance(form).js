@@ -139,6 +139,10 @@ new Vue({
             this.formVisible = !this.formVisible;
             this.showSubmissions = false;
         },
+        toggleshowSubmissions() {
+            this.showSubmissions = !this.showSubmissions;
+            this.formVisible = false;
+        },
         previous() {
             // Toggle the visibility and fetch submissions when the button is clicked
             this.showSubmissions = !this.showSubmissions;
